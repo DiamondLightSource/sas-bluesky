@@ -18,3 +18,5 @@ pypi: false
 repo_name: sas-bluesky
 strict_typing: false
 type_checker: pyright
+
+#copier updated
