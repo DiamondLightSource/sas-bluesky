@@ -12,8 +12,17 @@ import tkinter
 from tkinter import filedialog, messagebox, simpledialog, ttk
 
 import matplotlib.pyplot as plt
+from dodal.utils import get_beamline_name
 
 from sas_bluesky._version import __version__
+from sas_bluesky.defaults_configs import (
+    default_profile,
+    experiment_profile,
+    get_devices,
+    get_gui,
+    get_plan_params,
+    get_wiring,
+)
 
 # uncomment if needed in future
 # from stomp import Connection
@@ -21,22 +30,16 @@ from sas_bluesky._version import __version__
 # from bluesky_stomp.messaging import StompClient, BasicAuthentication
 from sas_bluesky.panda_gui_elements import ProfileTab
 from sas_bluesky.profile_groups import ExperimentProfiles
-from sas_bluesky.stubs.panda_stubs import return_connected_device
-from sas_bluesky.utils.utils import (
-    get_sas_beamline,
-    load_beamline_config,
-    load_beamline_devices,
-    load_beamline_profile,
-)
 
 ############################################################################################
 
-BL = get_sas_beamline()
-CONFIG = load_beamline_config()
+BL = get_beamline_name("i22")
+gui_config = get_gui(BL)
+wiring_config = get_wiring(BL)
+default_devices = get_devices(BL)
+plan_params = get_plan_params(BL)
+profile = default_profile(BL)
 
-BL_PROF = load_beamline_profile()
-DEFAULT_PROFILE = BL_PROF.DEFAULT_PROFILE
-DEV = load_beamline_devices()
 ############################################################################################
 
 
@@ -47,24 +50,6 @@ class PandAGUI(tkinter.Tk):
         configuration: ExperimentProfiles | None = None,
         start: bool = True,
     ):
-        user = os.environ.get("USER")
-
-        if user not in ["akz63626", "rjcd"]:  # check if I am runing this
-            try:
-                self.panda = return_connected_device(BL, DEV.DEFAULT_PANDA)
-            except Exception:
-                answer = (
-                    messagebox.askyesno(
-                        "PandA not Connected",
-                        "PandA is not connected, if you continue things will not work."
-                        " Continue?",
-                    ),
-                )
-                if answer:
-                    pass
-                else:
-                    quit()
-
         self.panda_config_yaml = panda_config_yaml
         self.default_config_path = os.path.join(
             os.path.dirname(os.path.realpath(__file__)),
@@ -100,7 +85,7 @@ class PandAGUI(tkinter.Tk):
         self.window = tkinter.Tk()
         self.window.wm_resizable(True, True)
         self.window.minsize(600, 200)
-        self.theme(CONFIG.THEME_NAME)
+        self.theme(gui_config.THEME_NAME)
 
         menubar = tkinter.Menu(self.window)
         filemenu = tkinter.Menu(menubar, tearoff=0)
@@ -207,7 +192,7 @@ class PandAGUI(tkinter.Tk):
 
             self.notebook.forget(self.add_frame)
 
-            self.configuration.append_profile(DEFAULT_PROFILE)
+            self.configuration.append_profile(profile)
 
             new_profile_tab = ProfileTab(
                 self,
@@ -327,28 +312,21 @@ class PandAGUI(tkinter.Tk):
 
         labels = ["TTLIN", "LVDSIN", "TTLOUT", "LVDSOUT"]
 
-        for key in CONFIG.TTLIN.keys():
-            INDev = CONFIG.TTLIN[key]
-
+        for key, value in wiring_config.TTL_IN.items():
             ax.scatter(0, key, color="k", s=50)
-            ax.text(0 + 0.1, key, INDev)
+            ax.text(0 + 0.1, key, value)
 
-        for key in CONFIG.LVDSIN.keys():
-            LVDSINDev = CONFIG.LVDSIN[key]
-
+        for key, value in wiring_config.LVDS_IN.items():
             ax.scatter(1, key, color="k", s=50)
-            ax.text(1 + 0.1, key, LVDSINDev)
+            ax.text(1 + 0.1, key, value)
 
-        for key in CONFIG.TTLOUT.keys():
-            TTLOUTDev = CONFIG.TTLOUT[key]
-
+        for key, value in wiring_config.TTL_OUT.items():
             ax.scatter(2, key, color="b", s=50)
-            ax.text(2 + 0.1, key, TTLOUTDev)
+            ax.text(2 + 0.1, key, value)
 
-        for key in CONFIG.LVDSOUT.keys():
-            LVDSOUTDev = CONFIG.LVDSOUT[key]
+        for key, value in wiring_config.LVDS_OUT.items():
             ax.scatter(3, key, color="b", s=50)
-            ax.text(3 + 0.1, key, LVDSOUTDev)
+            ax.text(3 + 0.1, key, value)
 
         ax.set_ylabel("I/O Connections")
         ax.grid()
@@ -514,7 +492,7 @@ class PandAGUI(tkinter.Tk):
     def build_active_detectors_frame(self):
         self.active_detectors_frames = {}
 
-        for pulse in range(CONFIG.PULSEBLOCKS):
+        for pulse in range(gui_config.PULSEBLOCKS):
             active_detectors_frame_n = ttk.Frame(
                 self.pulse_frame, borderwidth=5, relief="raised"
             )
@@ -533,7 +511,7 @@ class PandAGUI(tkinter.Tk):
             TTLLabel = ttk.Label(active_detectors_frame_n, text="TTL:")
             TTLLabel.grid(column=0, row=1, padx=5, pady=5, sticky="w")
 
-            for n, det in enumerate(CONFIG.PULSE_CONNECTIONS[pulse + 1]):
+            for n, det in enumerate(wiring_config.PULSE_CONNECTIONS[pulse + 1]):
                 # experiment_var=tkinter.StringVar(value=self.configuration.experiment)
 
                 if (det.lower() == "fs") or ("shutter" in det.lower()):
@@ -562,4 +540,5 @@ if __name__ == "__main__":
 
     # dir_path = os.path.dirname(os.path.realpath(__file__))
     # config_filepath = os.path.join(dir_path, "profile_yamls", "panda_config.yaml")
-    PandAGUI(configuration=BL_PROF.DEFAULT_EXPERIMENT)
+    instrument_session = input("Instrument Session/Visit?")
+    PandAGUI(configuration=experiment_profile(BL, instrument_session))

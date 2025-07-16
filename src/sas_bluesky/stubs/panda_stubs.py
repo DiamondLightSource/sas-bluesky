@@ -1,11 +1,14 @@
 import bluesky.plan_stubs as bps
 from bluesky.utils import MsgGenerator, short_uid
-from dodal.beamlines import module_name_for_beamline
 from dodal.devices.areadetector.plugins.CAM import ColorMode
 from dodal.devices.oav.oav_detector import OAV
 from dodal.devices.oav.oav_parameters import OAVParameters
-from dodal.utils import AnyDevice, make_all_devices, make_device
-from ophyd_async.core import StandardDetector, StandardFlyer, YamlSettingsProvider
+from ophyd_async.core import (
+    Device,
+    StandardDetector,
+    StandardFlyer,
+    YamlSettingsProvider,
+)
 from ophyd_async.fastcs.panda import HDFPanda, PcompInfo, SeqTableInfo
 from ophyd_async.plan_stubs import (
     apply_panda_settings,
@@ -13,48 +16,6 @@ from ophyd_async.plan_stubs import (
     store_settings,
 )
 from ophyd_async.plan_stubs._wait_for_awaitable import wait_for_awaitable
-
-
-def return_connected_device(beamline: str, device_name: str):
-    """
-    Connect to a device on the specified beamline and return the connected device.
-
-    Args:
-        beamline (str): Name of the beamline.
-        device_name (str): Name of the device to connect to.
-
-    Returns:
-        StandardDetector: The connected device.
-    """
-
-    module_name = module_name_for_beamline(beamline)
-
-    devices = make_device(
-        f"dodal.beamlines.{module_name}", device_name, connect_immediately=True
-    )
-    return devices[device_name]
-
-
-def return_module_name(beamline: str) -> str:
-    """
-    Takes the name of a beamline, and returns the name of the Dodal module where all
-    the devices for that module are stored
-    """
-
-    module_name = module_name_for_beamline(beamline)
-    return f"dodal.beamlines.{module_name}"
-
-
-def make_beamline_devices(beamline: str) -> dict[str, AnyDevice]:
-    """
-    Takes the name of a beamline and async creates all the devices for a beamline,
-    whether they are connected or not.
-    """
-
-    module = return_module_name(beamline)
-    beamline_devices, _ = make_all_devices(module)
-
-    return beamline_devices
 
 
 def fly_and_collect_with_wait(
@@ -125,7 +86,7 @@ def upload_yaml_to_panda(
 
 
 def save_device_to_yaml(
-    yaml_directory: str, yaml_file_name: str, device
+    yaml_directory: str, yaml_file_name: str, device: Device
 ) -> MsgGenerator:
     """
 

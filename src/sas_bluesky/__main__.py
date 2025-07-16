@@ -2,14 +2,17 @@
 
 import click
 from bluesky import RunEngine
+from dodal.utils import get_beamline_name
+from ophyd_async.plan_stubs import ensure_connected
 
+from sas_bluesky.defaults_configs import experiment_profile, get_devices
 from sas_bluesky.panda_gui import PandAGUI
-from sas_bluesky.stubs.panda_stubs import return_connected_device, save_device_to_yaml
-from sas_bluesky.utils.utils import load_beamline_devices, load_beamline_profile
+from sas_bluesky.stubs.panda_stubs import save_device_to_yaml
 
 from . import __version__
 
 __all__ = ["main"]
+BL = get_beamline_name("i22")
 
 
 @click.group(invoke_without_command=True)
@@ -21,24 +24,22 @@ def main(ctx: click.Context) -> None:
 
 
 @main.command(name="start_gui")
-def start_gui():
-    PROF = load_beamline_profile()
-    PandAGUI(configuration=PROF.DEFAULT_EXPERIMENT)
+def start_gui(instrument_session: str):
+    PandAGUI(configuration=experiment_profile(BL, instrument_session))
 
 
 @main.command(name="save_panda")
 def save_panda():
     RE = RunEngine()
 
-    DEV = load_beamline_devices()
-    panda_name = DEV.DEFAULT_PANDA
-    connected_panda = return_connected_device("i22", panda_name)
+    panda = get_devices(BL).DEFAULT_PANDA
+    RE(ensure_connected(panda))
     yaml_dir = input("Input directory to save")
     RE(
         save_device_to_yaml(
             yaml_directory=yaml_dir,
-            yaml_file_name=f"{panda_name}_SAVED",
-            device=connected_panda,
+            yaml_file_name=f"{panda.name}_SAVED",
+            device=panda,
         )
     )  # noqa
 

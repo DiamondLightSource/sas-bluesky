@@ -30,20 +30,18 @@ from ophyd_async.fastcs.panda import (
 from ophyd_async.plan_stubs import ensure_connected, get_current_settings
 from pydantic import validate_call  # ,NonNegativeFloat,
 
+from sas_bluesky.defaults_configs import get_devices, get_gui, get_plan_params
 from sas_bluesky.profile_groups import ExperimentProfiles, Profile  # Group
 from sas_bluesky.stubs.panda_stubs import (
     fly_and_collect_with_wait,
     load_settings_from_yaml,
-    return_connected_device,
     upload_yaml_to_panda,
 )
-from sas_bluesky.utils.utils import load_beamline_config, load_beamline_devices
 
-BL = get_beamline_name(os.environ["BEAMLINE"])
-CONFIG = load_beamline_config()
-DEV = load_beamline_devices()
-DEFAULT_PANDA = DEV.DEFAULT_PANDA
-FAST_DETECTORS = DEV.FAST_DETECTORS
+BL = get_beamline_name("i22")
+gui_config = get_gui(BL)
+default_devices = get_devices(BL)
+plan_params = get_plan_params(BL)
 
 
 def wait_until_complete(pv_obj, waiting_value=0, timeout=None):
@@ -102,7 +100,7 @@ def modify_panda_seq_table(panda: HDFPanda, profile: Profile, n_seq=1):
     yield from bps.abs_set(panda.seq[int(n_seq)].repeats, n_cycles, group=group)
     yield from bps.abs_set(panda.seq[int(n_seq)].prescale, 1, group=group)
     yield from bps.abs_set(panda.seq[int(n_seq)].prescale_units, "s", group=group)
-    yield from bps.wait(group=group, timeout=CONFIG.GENERAL_TIMEOUT)
+    yield from bps.wait(group=group, timeout=plan_params.GENERAL_TIMEOUT)
 
 
 def arm_panda_pulses(panda: HDFPanda, pulses: list[int], n_seq=1, group="arm_panda"):
@@ -125,7 +123,7 @@ def arm_panda_pulses(panda: HDFPanda, pulses: list[int], n_seq=1, group="arm_pan
             group=group,
         )
 
-    yield from bps.wait(group=group, timeout=CONFIG.GENERAL_TIMEOUT)
+    yield from bps.wait(group=group, timeout=plan_params.GENERAL_TIMEOUT)
 
 
 def disarm_panda_pulses(
@@ -150,7 +148,7 @@ def disarm_panda_pulses(
             group=group,
         )
 
-    yield from bps.wait(group=group, timeout=CONFIG.GENERAL_TIMEOUT)
+    yield from bps.wait(group=group, timeout=plan_params.GENERAL_TIMEOUT)
 
 
 def stage_and_prepare_detectors(
@@ -171,7 +169,7 @@ def stage_and_prepare_detectors(
         ###this tells the detector how may triggers to expect and sets the CAN aquire on
         yield from bps.prepare(det, trigger_info, wait=False, group=group)
 
-    yield from bps.wait(group=group, timeout=CONFIG.GENERAL_TIMEOUT)
+    yield from bps.wait(group=group, timeout=plan_params.GENERAL_TIMEOUT)
 
 
 def return_deadtime(
@@ -184,7 +182,7 @@ def return_deadtime(
 
     deadtime = (
         np.array([det._controller.get_deadtime(exposure) for det in detectors])  # noqa: SLF001
-        + CONFIG.DEADTIME_BUFFER
+        + plan_params.DEADTIME_BUFFER
     )
     return deadtime
 
@@ -207,7 +205,7 @@ def set_panda_output(
     )
     output_attr = getattr(panda, f"{output_type.lower()}out")[int(output)]
     yield from bps.abs_set(output_attr.val, state_value, group=group)
-    yield from bps.wait(group=group, timeout=CONFIG.GENERAL_TIMEOUT)
+    yield from bps.wait(group=group, timeout=plan_params.GENERAL_TIMEOUT)
 
 
 def generate_repeated_trigger_info(
@@ -242,7 +240,7 @@ def check_and_apply_panda_settings(panda: HDFPanda, panda_name: str) -> MsgGener
 
     - if different they will be overwritten with the ones
 
-    specified in the CONFIG.CONFIG_NAME
+    specified in the plan_params.CONFIG_NAME
 
     Settings may have changed due to Malcolm or
 
@@ -256,7 +254,7 @@ def check_and_apply_panda_settings(panda: HDFPanda, panda_name: str) -> MsgGener
     yaml_directory = os.path.join(
         os.path.dirname(os.path.realpath(__file__)), "ophyd_panda_yamls"
     )
-    yaml_file_name = f"{BL}_{CONFIG.CONFIG_NAME}_{panda_name}"
+    yaml_file_name = f"{BL}_{plan_params.CONFIG_NAME}_{panda_name}"
 
     current_panda_settings = yield from get_current_settings(panda)
     yaml_settings = yield from load_settings_from_yaml(yaml_directory, yaml_file_name)
@@ -283,20 +281,6 @@ def check_and_apply_panda_settings(panda: HDFPanda, panda_name: str) -> MsgGener
         )
 
 
-def check_tetramm():
-    """
-    Checks if the tetramm is connected and returns the tetramm device.
-    If the tetramm is not connected, it will raise an error.
-    """
-
-    try:
-        tetramm = return_connected_device("i22", "tetramm")
-        return tetramm
-    except Exception as e:
-        LOGGER.error(f"Tetramm not connected: {e}")
-        raise
-
-
 def inject_all(active_detector_names: list[str]) -> list[StandardDetector]:
     """
 
@@ -312,7 +296,7 @@ def inject_all(active_detector_names: list[str]) -> list[StandardDetector]:
 
 def multiple_pulse_blocks():
     pass
-    # for pulse in CONFIG.PULSEBLOCKS
+    # for pulse in gui.PULSEBLOCKS
     #   get the pulse block, find out what is attached to it
     #   set the multiplier and possibly duration accordingly
     #   for det in detectors_on_pulse_block:
@@ -353,8 +337,8 @@ def configure_panda_triggering(
     detectors: Annotated[
         set[StandardDetector],
         "List of str of the detector names, eg. saxs, waxs, i0, it",
-    ] = FAST_DETECTORS,
-    panda: HDFPanda = DEFAULT_PANDA,
+    ] = default_devices.FAST_DETECTORS,
+    panda: HDFPanda = default_devices.DEFAULT_PANDA,
     force_load=True,
 ) -> MsgGenerator[None]:
     """
@@ -428,7 +412,7 @@ def configure_panda_triggering(
 
     ############################################################
     # flyer and prepare fly, sets the sequencers table
-    trigger_logic = StaticSeqTableTriggerLogic(panda.seq[CONFIG.DEFAULT_SEQ])
+    trigger_logic = StaticSeqTableTriggerLogic(panda.seq[plan_params.DEFAULT_SEQ])
     flyer = StandardFlyer(trigger_logic)
 
     # ####stage the detectors, the flyer, the panda
@@ -454,7 +438,7 @@ def run_panda_triggering(
 
     """
     # flyer and prepare fly, sets the sequencers table
-    trigger_logic = StaticSeqTableTriggerLogic(panda.seq[CONFIG.DEFAULT_SEQ])
+    trigger_logic = StaticSeqTableTriggerLogic(panda.seq[plan_params.DEFAULT_SEQ])
     flyer = StandardFlyer(trigger_logic)
 
     ##########################
@@ -470,7 +454,7 @@ def run_panda_triggering(
     ##########################
     ###########################
     ####start diabling and unstaging everything
-    yield from wait_until_complete(panda.seq[CONFIG.DEFAULT_SEQ].active, False)
+    yield from wait_until_complete(panda.seq[plan_params.DEFAULT_SEQ].active, False)
     # start set to false because currently don't actually want to collect data
     yield from disarm_panda_pulses(panda=panda, pulses=active_pulses)
     yield from bps.unstage_all(*active_detectors, flyer)  # stops the hdf capture mode
@@ -494,8 +478,8 @@ def configure_and_run_panda_triggering(
     detectors: Annotated[
         set[StandardDetector],
         "List of str of the detector names, eg. saxs, waxs, i0, it",
-    ] = FAST_DETECTORS,
-    panda: HDFPanda = DEFAULT_PANDA,
+    ] = default_devices.FAST_DETECTORS,
+    panda: HDFPanda = default_devices.DEFAULT_PANDA,
     force_load=True,
 ) -> MsgGenerator[None]:
     """

@@ -1,5 +1,5 @@
 # Changes here will be overwritten by Copier
-_commit: 4.0.1
+_commit: 4.1.0
 _src_path: https://github.com/DiamondLightSource/python-copier-template
 author_email: richard.dixey@diamond.ac.uk
 author_name: Richard Dixey
@@ -18,5 +18,3 @@ pypi: false
 repo_name: sas-bluesky
 strict_typing: false
 type_checker: pyright
-
-#copier updated
