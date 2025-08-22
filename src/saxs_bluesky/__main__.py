@@ -7,7 +7,10 @@ from bluesky import RunEngine
 
 from saxs_bluesky.gui.panda_gui import PandAGUI
 from saxs_bluesky.stubs.panda_stubs import return_connected_device, save_device_to_yaml
-from saxs_bluesky.utils.utils import load_beamline_devices, load_beamline_profile
+from saxs_bluesky.utils.utils import (
+    load_beamline_devices,
+    load_beamline_profile,
+)
 
 from . import __version__
 
@@ -26,6 +29,13 @@ def main(ctx: click.Context) -> None:
 def start_gui():
     PROF = load_beamline_profile()
     PandAGUI(configuration=PROF.DEFAULT_EXPERIMENT)
+
+
+@main.command(name="login")
+def login():
+    os.system(
+        f"blueapi -c ./src/saxs_bluesky/blueapi_configs/{os.environ['BEAMLINE']}_blueapi_config.yaml login"  # noqa
+    )
 
 
 @main.command(name="save_panda")

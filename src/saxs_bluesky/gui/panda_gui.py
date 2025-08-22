@@ -9,7 +9,7 @@ Python dataclasses and GUI as a replacement for NCDDetectors
 
 import os
 import tkinter
-from tkinter import filedialog, messagebox, simpledialog, ttk
+from tkinter import filedialog, messagebox, ttk
 
 import matplotlib.pyplot as plt
 
@@ -20,7 +20,6 @@ from saxs_bluesky._version import __version__
 # from blueapi.client.event_bus import EventBusClient
 # from bluesky_stomp.messaging import StompClient, BasicAuthentication
 from saxs_bluesky.gui.panda_gui_elements import ProfileTab
-from saxs_bluesky.stubs.panda_stubs import return_connected_device
 from saxs_bluesky.utils.profile_groups import ExperimentProfiles
 from saxs_bluesky.utils.utils import (
     get_saxs_beamline,
@@ -47,24 +46,6 @@ class PandAGUI(tkinter.Tk):
         configuration: ExperimentProfiles | None = None,
         start: bool = True,
     ):
-        user = os.environ.get("USER")
-
-        if user not in ["root", "rjcd"]:  # check to see if in dev mode
-            try:
-                self.panda = return_connected_device(BL, DEV.DEFAULT_PANDA)
-            except Exception:
-                answer = (
-                    messagebox.askyesno(
-                        "PandA not Connected",
-                        "PandA is not connected, if you continue things will not work."
-                        " Continue?",
-                    ),
-                )
-                if answer:
-                    pass
-                else:
-                    quit()
-
         self.panda_config_yaml = panda_config_yaml
         self.default_config_path = os.path.join(
             os.path.dirname(os.path.realpath(__file__)),
@@ -87,13 +68,6 @@ class PandAGUI(tkinter.Tk):
                 "Must pass either panda_config_yaml or configuration object. Not both"
             )
             quit()
-
-        if self.configuration.experiment is None:
-            user_input = simpledialog.askstring(
-                title="Experiment", prompt="Enter an experiment code:"
-            )
-
-            self.configuration.experiment = user_input
 
         self.profiles = self.configuration.profiles
 
@@ -272,8 +246,6 @@ class PandAGUI(tkinter.Tk):
         for i in range(self.configuration.n_profiles):
             proftab_object = self.notebook.nametowidget(tab_names[i])
             proftab_object.edit_config_for_profile()
-
-        self.configuration.experiment = self.experiment_var.get()
 
     def load_config(self):
         panda_config_yaml = filedialog.askopenfilename()
@@ -496,20 +468,10 @@ class PandAGUI(tkinter.Tk):
             fill="both", expand=True, side="bottom", anchor="w"
         )
 
-        self.experiment_var = tkinter.StringVar(value=self.configuration.experiment)
-
         ttk.Label(
             self.experiment_settings_frame,
             text="Instrument: " + self.configuration.instrument.upper(),
         ).grid(column=0, row=0, padx=5, pady=5, sticky="w")
-
-        ttk.Label(self.experiment_settings_frame, text="Experiment:").grid(
-            column=0, row=1, padx=5, pady=5, sticky="w"
-        )
-
-        tkinter.Entry(
-            self.experiment_settings_frame, bd=1, textvariable=self.experiment_var
-        ).grid(column=1, row=1, padx=5, pady=5, sticky="w")
 
     def build_active_detectors_frame(self):
         self.active_detectors_frames = {}

@@ -27,7 +27,7 @@ from saxs_bluesky.utils.utils import (
 CONFIG = load_beamline_config()
 BL_PROF = load_beamline_profile()
 DEFAULT_GROUP = BL_PROF.DEFAULT_GROUP
-Bl = get_saxs_beamline()
+BL = get_saxs_beamline()
 
 
 class EditableTableview(ttk.Treeview):
@@ -483,7 +483,10 @@ class ProfileTab(ttk.Frame):
         cycles = self.get_n_cycles_value()
         profile_trigger = self.get_start_value()
 
-        multiplier = [int(f.get()) for f in self.multiplier_var_options]
+        if self.multiplier_var_options:
+            multiplier = [int(f.get()) for f in self.multiplier_var_options]
+        else:
+            multiplier = [1] * CONFIG.PULSEBLOCKS
 
         new_profile = Profile(
             cycles=cycles,
@@ -564,6 +567,8 @@ class ProfileTab(ttk.Frame):
 
         if CONFIG.USE_MULTIPLIERS:
             self.build_multiplier_choices()
+        else:
+            self.multiplier_var_options = None
             ### add tree view ############################################
 
         self.build_profile_tree()

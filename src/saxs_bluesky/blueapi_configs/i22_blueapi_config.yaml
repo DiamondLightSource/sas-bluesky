@@ -1,26 +1,8 @@
-env:
-  metadata:
-    instrument: i22
-    instrument_session: CM40643-3
-  sources:
-  - kind: dodal
-    module: dodal.beamlines.i22
-  - kind: planFunctions
-    module: dodal.plans
-  - kind: planFunctions
-    module: i22_bluesky.plans
-  - kind: planFunctions
-    module: i22_bluesky.stubs
-  events:
-    broadcast_status_events: False
 api:
-  host:  i22-blueapi.diamond.ac.uk
-  port: 443
-  protocol: "https"
+  url: https://i22-blueapi.diamond.ac.uk
 stomp:
-  host: i22-rabbitmq-daq.diamond.ac.uk
-  #port: 443
-  enabled: true
   auth:
-    username: i22
-    password:  $RABBITMQ_PASSWORD
+    username: guest
+    password: guest
+  url: tcp://i22-rabbitmq-daq.diamond.ac.uk:61613
+  enabled: true

@@ -203,15 +203,10 @@ class ExperimentProfiles:
 
     profiles: list[Profile]
     instrument: str
-    experiment: str
     detectors: list[str]
 
     def __post_init__(self):
         self.year = datetime.now().year
-        self.data_dir = os.path.join(
-            "/dls", self.instrument, "data", str(self.year), self.experiment
-        )
-
         self.n_profiles = len(self.profiles)
 
     @staticmethod
@@ -227,7 +222,6 @@ class ExperimentProfiles:
             config = yaml.full_load(file)
 
             instrument = config["instrument"]
-            experiment = config["experiment"]
             detectors = config["detectors"]
 
             profile_names = [f for f in config if f.startswith("profile")]
@@ -269,12 +263,11 @@ class ExperimentProfiles:
 
                 profiles.append(n_profile)
 
-            return ExperimentProfiles(profiles, instrument, experiment, detectors)
+            return ExperimentProfiles(profiles, instrument, detectors)
 
     def to_dict(self) -> dict:
         exp_dict = {
             "title": "Panda Configure",
-            "experiment": self.experiment,
             "instrument": self.instrument,
             "detectors": self.detectors,
         }

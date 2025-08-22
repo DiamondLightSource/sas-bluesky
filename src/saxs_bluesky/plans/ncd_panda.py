@@ -13,7 +13,6 @@ from dodal.common.beamlines.beamline_utils import set_path_provider
 from dodal.common.visit import RemoteDirectoryServiceClient, StaticVisitPathProvider
 from dodal.log import LOGGER
 from dodal.plan_stubs.data_session import attach_data_session_metadata_decorator
-from dodal.utils import get_beamline_name
 from ophyd_async.core import (
     DetectorTrigger,
     StandardDetector,
@@ -37,9 +36,13 @@ from saxs_bluesky.stubs.panda_stubs import (
     upload_yaml_to_panda,
 )
 from saxs_bluesky.utils.profile_groups import ExperimentProfiles, Profile  # Group
-from saxs_bluesky.utils.utils import load_beamline_config, load_beamline_devices
+from saxs_bluesky.utils.utils import (
+    get_saxs_beamline,
+    load_beamline_config,
+    load_beamline_devices,
+)
 
-BL = get_beamline_name(os.environ["BEAMLINE"])
+BL = get_saxs_beamline()
 CONFIG = load_beamline_config()
 DEV = load_beamline_devices()
 DEFAULT_PANDA = DEV.DEFAULT_PANDA
@@ -591,7 +594,7 @@ if __name__ == "__main__":
     RE(
         configure_panda_triggering(
             "i22",
-            "cm40643-3/bluesky",
+            "cm40643-4/bluesky",
             profile,
             force_load=False,
         )
