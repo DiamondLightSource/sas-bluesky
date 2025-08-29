@@ -1,7 +1,7 @@
-bits.a: '1'
-bits.b: '1'
-bits.c: '1'
-bits.d: '1'
+bits.a: "1"
+bits.b: "1"
+bits.c: "1"
+bits.d: "1"
 bits.label: Soft inputs and constant bits
 calc.1.func: A+B+C+D
 calc.1.inpa: ZERO
@@ -9,11 +9,11 @@ calc.1.inpb: ZERO
 calc.1.inpc: ZERO
 calc.1.inpd: ZERO
 calc.1.label: Position calc
-calc.1.out_capture: 'No'
-calc.1.out_dataset: ''
+calc.1.out_capture: "No"
+calc.1.out_dataset: ""
 calc.1.out_offset: 0.0
 calc.1.out_scale: 1.0
-calc.1.out_units: ''
+calc.1.out_units: ""
 calc.1.shift: 0.0
 calc.1.typea: Value
 calc.1.typeb: Value
@@ -25,11 +25,11 @@ calc.2.inpb: ZERO
 calc.2.inpc: ZERO
 calc.2.inpd: ZERO
 calc.2.label: Position calc
-calc.2.out_capture: 'No'
-calc.2.out_dataset: ''
+calc.2.out_capture: "No"
+calc.2.out_dataset: ""
 calc.2.out_offset: 0.0
 calc.2.out_scale: 1.0
-calc.2.out_units: ''
+calc.2.out_units: ""
 calc.2.shift: 0.0
 calc.2.typea: Value
 calc.2.typeb: Value
@@ -52,11 +52,11 @@ counter.1.enable_delay: 0
 counter.1.label: Up/Down pulse counter
 counter.1.max: 0
 counter.1.min: 0
-counter.1.out_capture: 'No'
-counter.1.out_dataset: ''
+counter.1.out_capture: "No"
+counter.1.out_dataset: ""
 counter.1.out_offset: 0.0
 counter.1.out_scale: 1.0
-counter.1.out_units: ''
+counter.1.out_units: ""
 counter.1.start: 0
 counter.1.step: 0.0
 counter.1.trig: ZERO
@@ -68,11 +68,11 @@ counter.2.enable_delay: 0
 counter.2.label: Up/Down pulse counter
 counter.2.max: 0
 counter.2.min: 0
-counter.2.out_capture: 'No'
-counter.2.out_dataset: ''
+counter.2.out_capture: "No"
+counter.2.out_dataset: ""
 counter.2.out_offset: 0.0
 counter.2.out_scale: 1.0
-counter.2.out_units: ''
+counter.2.out_units: ""
 counter.2.start: 0
 counter.2.step: 0.0
 counter.2.trig: ZERO
@@ -84,11 +84,11 @@ counter.3.enable_delay: 0
 counter.3.label: Up/Down pulse counter
 counter.3.max: 0
 counter.3.min: 0
-counter.3.out_capture: 'No'
-counter.3.out_dataset: ''
+counter.3.out_capture: "No"
+counter.3.out_dataset: ""
 counter.3.out_offset: 0.0
 counter.3.out_scale: 1.0
-counter.3.out_units: ''
+counter.3.out_units: ""
 counter.3.start: 0
 counter.3.step: 0.0
 counter.3.trig: ZERO
@@ -100,11 +100,11 @@ counter.4.enable_delay: 0
 counter.4.label: Up/Down pulse counter
 counter.4.max: 0
 counter.4.min: 0
-counter.4.out_capture: 'No'
-counter.4.out_dataset: ''
+counter.4.out_capture: "No"
+counter.4.out_dataset: ""
 counter.4.out_offset: 0.0
 counter.4.out_scale: 1.0
-counter.4.out_units: ''
+counter.4.out_units: ""
 counter.4.start: 0
 counter.4.step: 0.0
 counter.4.trig: ZERO
@@ -116,11 +116,11 @@ counter.5.enable_delay: 0
 counter.5.label: Up/Down pulse counter
 counter.5.max: 0
 counter.5.min: 0
-counter.5.out_capture: 'No'
-counter.5.out_dataset: ''
+counter.5.out_capture: "No"
+counter.5.out_dataset: ""
 counter.5.out_offset: 0.0
 counter.5.out_scale: 1.0
-counter.5.out_units: ''
+counter.5.out_units: ""
 counter.5.start: 0
 counter.5.step: 0.0
 counter.5.trig: ZERO
@@ -132,11 +132,11 @@ counter.6.enable_delay: 0
 counter.6.label: Up/Down pulse counter
 counter.6.max: 0
 counter.6.min: 0
-counter.6.out_capture: 'No'
-counter.6.out_dataset: ''
+counter.6.out_capture: "No"
+counter.6.out_dataset: ""
 counter.6.out_offset: 0.0
 counter.6.out_scale: 1.0
-counter.6.out_units: ''
+counter.6.out_units: ""
 counter.6.start: 0
 counter.6.step: 0.0
 counter.6.trig: ZERO
@@ -148,11 +148,11 @@ counter.7.enable_delay: 0
 counter.7.label: Up/Down pulse counter
 counter.7.max: 0
 counter.7.min: 0
-counter.7.out_capture: 'No'
-counter.7.out_dataset: ''
+counter.7.out_capture: "No"
+counter.7.out_dataset: ""
 counter.7.out_offset: 0.0
 counter.7.out_scale: 1.0
-counter.7.out_units: ''
+counter.7.out_units: ""
 counter.7.start: 0
 counter.7.step: 0.0
 counter.7.trig: ZERO
@@ -164,11 +164,11 @@ counter.8.enable_delay: 0
 counter.8.label: Up/Down pulse counter
 counter.8.max: 0
 counter.8.min: 0
-counter.8.out_capture: 'No'
-counter.8.out_dataset: ''
+counter.8.out_capture: "No"
+counter.8.out_dataset: ""
 counter.8.out_offset: 0.0
 counter.8.out_scale: 1.0
-counter.8.out_units: ''
+counter.8.out_units: ""
 counter.8.start: 0
 counter.8.step: 0.0
 counter.8.trig: ZERO
@@ -177,8 +177,8 @@ data.capture: false
 data.capture_mode: FIRST_N
 data.create_directory: 0
 data.flush_period: 1.0
-data.hdf_directory: ''
-data.hdf_file_name: ''
+data.hdf_directory: ""
+data.hdf_file_name: ""
 data.num_capture: 0
 div.1.divisor: 0.0
 div.1.enable: ZERO
@@ -199,11 +199,11 @@ filter.1.enable_delay: 0
 filter.1.inp: ZERO
 filter.1.label: Filter block modes are Difference and Divider
 filter.1.mode: difference
-filter.1.out_capture: 'No'
-filter.1.out_dataset: ''
+filter.1.out_capture: "No"
+filter.1.out_dataset: ""
 filter.1.out_offset: 0.0
 filter.1.out_scale: 1.0
-filter.1.out_units: ''
+filter.1.out_units: ""
 filter.1.trig: ZERO
 filter.1.trig_delay: 0
 filter.2.enable: ZERO
@@ -211,11 +211,11 @@ filter.2.enable_delay: 0
 filter.2.inp: ZERO
 filter.2.label: Filter block modes are Difference and Divider
 filter.2.mode: difference
-filter.2.out_capture: 'No'
-filter.2.out_dataset: ''
+filter.2.out_capture: "No"
+filter.2.out_dataset: ""
 filter.2.out_offset: 0.0
 filter.2.out_scale: 1.0
-filter.2.out_units: ''
+filter.2.out_units: ""
 filter.2.trig: ZERO
 filter.2.trig_delay: 0
 inenc.1.bits: 0.0
@@ -231,13 +231,13 @@ inenc.1.label: Input encoder
 inenc.1.lsb_discard: 0.0
 inenc.1.msb_discard: 0.0
 inenc.1.protocol: Quadrature
-inenc.1.rst_on_z: '1'
+inenc.1.rst_on_z: "1"
 inenc.1.setp: 0
-inenc.1.val_capture: 'No'
-inenc.1.val_dataset: ''
+inenc.1.val_capture: "No"
+inenc.1.val_dataset: ""
 inenc.1.val_offset: 0.0
 inenc.1.val_scale: 1.0
-inenc.1.val_units: ''
+inenc.1.val_units: ""
 inenc.2.bits: 0.0
 inenc.2.clk: ZERO
 inenc.2.clk_delay: 0
@@ -251,13 +251,13 @@ inenc.2.label: Input encoder
 inenc.2.lsb_discard: 0.0
 inenc.2.msb_discard: 0.0
 inenc.2.protocol: Quadrature
-inenc.2.rst_on_z: '1'
+inenc.2.rst_on_z: "1"
 inenc.2.setp: 0
-inenc.2.val_capture: 'No'
-inenc.2.val_dataset: ''
+inenc.2.val_capture: "No"
+inenc.2.val_dataset: ""
 inenc.2.val_offset: 0.0
 inenc.2.val_scale: 1.0
-inenc.2.val_units: ''
+inenc.2.val_units: ""
 inenc.3.bits: 0.0
 inenc.3.clk: ZERO
 inenc.3.clk_delay: 0
@@ -271,13 +271,13 @@ inenc.3.label: Input encoder
 inenc.3.lsb_discard: 0.0
 inenc.3.msb_discard: 0.0
 inenc.3.protocol: Quadrature
-inenc.3.rst_on_z: '1'
+inenc.3.rst_on_z: "1"
 inenc.3.setp: 0
-inenc.3.val_capture: 'No'
-inenc.3.val_dataset: ''
+inenc.3.val_capture: "No"
+inenc.3.val_dataset: ""
 inenc.3.val_offset: 0.0
 inenc.3.val_scale: 1.0
-inenc.3.val_units: ''
+inenc.3.val_units: ""
 inenc.4.bits: 0.0
 inenc.4.clk: ZERO
 inenc.4.clk_delay: 0
@@ -291,19 +291,19 @@ inenc.4.label: Input encoder
 inenc.4.lsb_discard: 0.0
 inenc.4.msb_discard: 0.0
 inenc.4.protocol: Quadrature
-inenc.4.rst_on_z: '1'
+inenc.4.rst_on_z: "1"
 inenc.4.setp: 0
-inenc.4.val_capture: 'No'
-inenc.4.val_dataset: ''
+inenc.4.val_capture: "No"
+inenc.4.val_dataset: ""
 inenc.4.val_offset: 0.0
 inenc.4.val_scale: 1.0
-inenc.4.val_units: ''
+inenc.4.val_units: ""
 lut.1.func: (A|B|C|D|E)
 lut.1.inpa: TTLIN2.VAL
 lut.1.inpa_delay: 0
 lut.1.inpb: SFP3_SYNC_IN.BIT16
 lut.1.inpb_delay: 0
-lut.1.inpc: PULSE1.OUT
+lut.1.inpc: SEQ1.OUTA
 lut.1.inpc_delay: 0
 lut.1.inpd: ZERO
 lut.1.inpd_delay: 0
@@ -318,7 +318,7 @@ lut.1.typee: Input-Level
 lut.2.func: (A|B|C|D|E)
 lut.2.inpa: SFP3_SYNC_IN.BIT1
 lut.2.inpa_delay: 0
-lut.2.inpb: PULSE2.OUT
+lut.2.inpb: SEQ1.OUTB
 lut.2.inpb_delay: 0
 lut.2.inpc: TTLIN1.VAL
 lut.2.inpc_delay: 0
@@ -337,7 +337,7 @@ lut.3.inpa: SFP3_SYNC_IN.BIT1
 lut.3.inpa_delay: 0
 lut.3.inpb: TTLIN1.VAL
 lut.3.inpb_delay: 0
-lut.3.inpc: PULSE3.OUT
+lut.3.inpc: SEQ1.OUTC
 lut.3.inpc_delay: 0
 lut.3.inpd: ZERO
 lut.3.inpd_delay: 0
@@ -354,7 +354,7 @@ lut.4.inpa: SFP3_SYNC_IN.BIT1
 lut.4.inpa_delay: 0
 lut.4.inpb: TTLIN1.VAL
 lut.4.inpb_delay: 0
-lut.4.inpc: PULSE4.OUT
+lut.4.inpc: SEQ1.OUTD
 lut.4.inpc_delay: 0
 lut.4.inpd: ZERO
 lut.4.inpd_delay: 0
@@ -400,7 +400,7 @@ lut.6.typeb: Input-Level
 lut.6.typec: Input-Level
 lut.6.typed: Input-Level
 lut.6.typee: Input-Level
-lut.7.func: '0x00000000'
+lut.7.func: "0x00000000"
 lut.7.inpa: ZERO
 lut.7.inpa_delay: 0
 lut.7.inpb: ZERO
@@ -417,7 +417,7 @@ lut.7.typeb: Input-Level
 lut.7.typec: Input-Level
 lut.7.typed: Input-Level
 lut.7.typee: Input-Level
-lut.8.func: '0x00000000'
+lut.8.func: "0x00000000"
 lut.8.inpa: ZERO
 lut.8.inpa_delay: 0
 lut.8.inpb: ZERO
@@ -452,7 +452,7 @@ outenc.1.data_delay: 0
 outenc.1.enable: ZERO
 outenc.1.enable_delay: 0
 outenc.1.encoding: Unsigned Binary
-outenc.1.generator_error: 'No'
+outenc.1.generator_error: "No"
 outenc.1.label: Output encoder
 outenc.1.protocol: Quadrature
 outenc.1.qperiod: 0.0
@@ -470,7 +470,7 @@ outenc.2.data_delay: 0
 outenc.2.enable: ZERO
 outenc.2.enable_delay: 0
 outenc.2.encoding: Unsigned Binary
-outenc.2.generator_error: 'No'
+outenc.2.generator_error: "No"
 outenc.2.label: Output encoder
 outenc.2.protocol: Quadrature
 outenc.2.qperiod: 0.0
@@ -488,7 +488,7 @@ outenc.3.data_delay: 0
 outenc.3.enable: ZERO
 outenc.3.enable_delay: 0
 outenc.3.encoding: Unsigned Binary
-outenc.3.generator_error: 'No'
+outenc.3.generator_error: "No"
 outenc.3.label: Output encoder
 outenc.3.protocol: Quadrature
 outenc.3.qperiod: 0.0
@@ -506,7 +506,7 @@ outenc.4.data_delay: 0
 outenc.4.enable: ZERO
 outenc.4.enable_delay: 0
 outenc.4.encoding: Unsigned Binary
-outenc.4.generator_error: 'No'
+outenc.4.generator_error: "No"
 outenc.4.label: Output encoder
 outenc.4.protocol: Quadrature
 outenc.4.qperiod: 0.0
@@ -515,31 +515,31 @@ outenc.4.val: ZERO
 outenc.4.z: ZERO
 outenc.4.z_delay: 0
 pcap.arm: false
-pcap.bits0_capture: 'No'
-pcap.bits0_dataset: ''
-pcap.bits1_capture: 'No'
-pcap.bits1_dataset: ''
-pcap.bits2_capture: 'No'
-pcap.bits2_dataset: ''
-pcap.bits3_capture: 'No'
-pcap.bits3_dataset: ''
+pcap.bits0_capture: "No"
+pcap.bits0_dataset: ""
+pcap.bits1_capture: "No"
+pcap.bits1_dataset: ""
+pcap.bits2_capture: "No"
+pcap.bits2_dataset: ""
+pcap.bits3_capture: "No"
+pcap.bits3_dataset: ""
 pcap.enable: ZERO
 pcap.enable_delay: 0
 pcap.gate: ZERO
 pcap.gate_delay: 0
 pcap.label: Position capture control
-pcap.samples_capture: 'No'
-pcap.samples_dataset: ''
+pcap.samples_capture: "No"
+pcap.samples_dataset: ""
 pcap.shift_sum: 0.0
 pcap.trig: ZERO
 pcap.trig_delay: 0
 pcap.trig_edge: Rising
-pcap.ts_end_capture: 'No'
-pcap.ts_end_dataset: ''
-pcap.ts_start_capture: 'No'
-pcap.ts_start_dataset: ''
-pcap.ts_trig_capture: 'No'
-pcap.ts_trig_dataset: ''
+pcap.ts_end_capture: "No"
+pcap.ts_end_dataset: ""
+pcap.ts_start_capture: "No"
+pcap.ts_start_dataset: ""
+pcap.ts_trig_capture: "No"
+pcap.ts_trig_dataset: ""
 pcomp.1.dir: Positive
 pcomp.1.enable: ZERO
 pcomp.1.enable_delay: 0
@@ -565,11 +565,11 @@ pcomp.2.width: 0
 pgen.1.enable: ZERO
 pgen.1.enable_delay: 0
 pgen.1.label: Position generator
-pgen.1.out_capture: 'No'
-pgen.1.out_dataset: ''
+pgen.1.out_capture: "No"
+pgen.1.out_dataset: ""
 pgen.1.out_offset: 0.0
 pgen.1.out_scale: 1.0
-pgen.1.out_units: ''
+pgen.1.out_units: ""
 pgen.1.repeats: 0.0
 pgen.1.table:
   position: []
@@ -578,11 +578,11 @@ pgen.1.trig_delay: 0
 pgen.2.enable: ZERO
 pgen.2.enable_delay: 0
 pgen.2.label: Position generator
-pgen.2.out_capture: 'No'
-pgen.2.out_dataset: ''
+pgen.2.out_capture: "No"
+pgen.2.out_dataset: ""
 pgen.2.out_offset: 0.0
 pgen.2.out_scale: 1.0
-pgen.2.out_units: ''
+pgen.2.out_units: ""
 pgen.2.repeats: 0.0
 pgen.2.table:
   position: []
@@ -590,52 +590,52 @@ pgen.2.trig: ZERO
 pgen.2.trig_delay: 0
 pulse.1.delay: 0.0
 pulse.1.delay_units: ms
-pulse.1.enable: ZERO
+pulse.1.enable: ONE
 pulse.1.enable_delay: 0
-pulse.1.label: SAXS/WAXS/TetrAMM Pulse
-pulse.1.pulses: 2.0
+pulse.1.label: FS Pulse
+pulse.1.pulses: 2
 pulse.1.step: 1.0
 pulse.1.step_units: ms
-pulse.1.trig: SEQ1.OUTA
+pulse.1.trig: ZERO
 pulse.1.trig_delay: 0
 pulse.1.trig_edge: Rising
 pulse.1.width: 1.0
 pulse.1.width_units: ms
 pulse.2.delay: 0.0
 pulse.2.delay_units: ms
-pulse.2.enable: ZERO
+pulse.2.enable: ONE
 pulse.2.enable_delay: 0
-pulse.2.label: Optical Camera Pulse
-pulse.2.pulses: 4.0
+pulse.2.label: SAXS/WAXS/TetrAMM Pulse
+pulse.2.pulses: 4
 pulse.2.step: 1.0
 pulse.2.step_units: ms
-pulse.2.trig: SEQ1.OUTB
+pulse.2.trig: ZERO
 pulse.2.trig_delay: 0
 pulse.2.trig_edge: Rising
 pulse.2.width: 1.0
 pulse.2.width_units: ms
 pulse.3.delay: 0.0
 pulse.3.delay_units: ms
-pulse.3.enable: ZERO
+pulse.3.enable: ONE
 pulse.3.enable_delay: 0
-pulse.3.label: Fluorescence Pulse
-pulse.3.pulses: 6.0
+pulse.3.label: Camera Pulse
+pulse.3.pulses: 6
 pulse.3.step: 1000.0
 pulse.3.step_units: ms
-pulse.3.trig: SEQ1.OUTC
+pulse.3.trig: ZERO
 pulse.3.trig_delay: 0
 pulse.3.trig_edge: Rising
 pulse.3.width: 1000.0
 pulse.3.width_units: ms
 pulse.4.delay: 0.0
 pulse.4.delay_units: ms
-pulse.4.enable: ZERO
+pulse.4.enable: ONE
 pulse.4.enable_delay: 0
-pulse.4.label: User Pulse
-pulse.4.pulses: 8.0
+pulse.4.label: Flourescence Pulse
+pulse.4.pulses: 8
 pulse.4.step: 1.0
 pulse.4.step_units: ms
-pulse.4.trig: SEQ1.OUTD
+pulse.4.trig: ZERO
 pulse.4.trig_delay: 0
 pulse.4.trig_edge: Rising
 pulse.4.width: 1000.0
@@ -652,28 +652,28 @@ seq.1.label: Sequencer 1
 seq.1.posa: ZERO
 seq.1.posb: ZERO
 seq.1.posc: ZERO
-seq.1.prescale: 0.0
-seq.1.prescale_units: s
-seq.1.repeats: 0
+seq.1.prescale: 1.0
+seq.1.prescale_units: us
+seq.1.repeats: 1
 seq.1.table:
-  outa1: [true]
+  outa1: [false]
   outa2: [true]
   outb1: [false]
-  outb2: [false]
+  outb2: [true]
   outc1: [false]
-  outc2: [false]
+  outc2: [true]
   outd1: [false]
-  outd2: [false]
+  outd2: [true]
   oute1: [false]
   oute2: [false]
   outf1: [false]
   outf2: [false]
   position: [0]
   repeats: [1]
-  time1: [5]
-  time2: [1]
+  time1: [1000000]
+  time2: [1000000]
   trigger:
-  - Immediate
+    - Immediate
 seq.2.bita: ZERO
 seq.2.bita_delay: 0
 seq.2.bitb: ZERO
@@ -708,26 +708,26 @@ seq.2.table:
   time2: []
   trigger: []
 sfp2_sync_in.label: sfp panda synchronizer
-sfp2_sync_in.pos1_capture: 'No'
-sfp2_sync_in.pos1_dataset: ''
+sfp2_sync_in.pos1_capture: "No"
+sfp2_sync_in.pos1_dataset: ""
 sfp2_sync_in.pos1_offset: 0.0
 sfp2_sync_in.pos1_scale: 1.0
-sfp2_sync_in.pos1_units: ''
-sfp2_sync_in.pos2_capture: 'No'
-sfp2_sync_in.pos2_dataset: ''
+sfp2_sync_in.pos1_units: ""
+sfp2_sync_in.pos2_capture: "No"
+sfp2_sync_in.pos2_dataset: ""
 sfp2_sync_in.pos2_offset: 0.0
 sfp2_sync_in.pos2_scale: 1.0
-sfp2_sync_in.pos2_units: ''
-sfp2_sync_in.pos3_capture: 'No'
-sfp2_sync_in.pos3_dataset: ''
+sfp2_sync_in.pos2_units: ""
+sfp2_sync_in.pos3_capture: "No"
+sfp2_sync_in.pos3_dataset: ""
 sfp2_sync_in.pos3_offset: 0.0
 sfp2_sync_in.pos3_scale: 1.0
-sfp2_sync_in.pos3_units: ''
-sfp2_sync_in.pos4_capture: 'No'
-sfp2_sync_in.pos4_dataset: ''
+sfp2_sync_in.pos3_units: ""
+sfp2_sync_in.pos4_capture: "No"
+sfp2_sync_in.pos4_dataset: ""
 sfp2_sync_in.pos4_offset: 0.0
 sfp2_sync_in.pos4_scale: 1.0
-sfp2_sync_in.pos4_units: ''
+sfp2_sync_in.pos4_units: ""
 sfp2_sync_out.bit1: ZERO
 sfp2_sync_out.bit10: ZERO
 sfp2_sync_out.bit10_delay: 0
@@ -766,26 +766,26 @@ sfp2_sync_out.pos2: ZERO
 sfp2_sync_out.pos3: ZERO
 sfp2_sync_out.pos4: ZERO
 sfp3_sync_in.label: sfp panda synchronizer
-sfp3_sync_in.pos1_capture: 'No'
-sfp3_sync_in.pos1_dataset: ''
+sfp3_sync_in.pos1_capture: "No"
+sfp3_sync_in.pos1_dataset: ""
 sfp3_sync_in.pos1_offset: 0.0
 sfp3_sync_in.pos1_scale: 1.0
-sfp3_sync_in.pos1_units: ''
-sfp3_sync_in.pos2_capture: 'No'
-sfp3_sync_in.pos2_dataset: ''
+sfp3_sync_in.pos1_units: ""
+sfp3_sync_in.pos2_capture: "No"
+sfp3_sync_in.pos2_dataset: ""
 sfp3_sync_in.pos2_offset: 0.0
 sfp3_sync_in.pos2_scale: 1.0
-sfp3_sync_in.pos2_units: ''
-sfp3_sync_in.pos3_capture: 'No'
-sfp3_sync_in.pos3_dataset: ''
+sfp3_sync_in.pos2_units: ""
+sfp3_sync_in.pos3_capture: "No"
+sfp3_sync_in.pos3_dataset: ""
 sfp3_sync_in.pos3_offset: 0.0
 sfp3_sync_in.pos3_scale: 1.0
-sfp3_sync_in.pos3_units: ''
-sfp3_sync_in.pos4_capture: 'No'
-sfp3_sync_in.pos4_dataset: ''
+sfp3_sync_in.pos3_units: ""
+sfp3_sync_in.pos4_capture: "No"
+sfp3_sync_in.pos4_dataset: ""
 sfp3_sync_in.pos4_offset: 0.0
 sfp3_sync_in.pos4_scale: 1.0
-sfp3_sync_in.pos4_units: ''
+sfp3_sync_in.pos4_units: ""
 sfp3_sync_out.bit1: ZERO
 sfp3_sync_out.bit10: ZERO
 sfp3_sync_out.bit10_delay: 0
@@ -880,7 +880,7 @@ ttlin.6.term: High-Z
 ttlout.1.label: IO TetrAMM
 ttlout.1.val: LUT2.OUT
 ttlout.1.val_delay: 0
-ttlout.10.label: User Trigger 2
+ttlout.10.label: Detector State User Trigger 2
 ttlout.10.val: LUT6.OUT
 ttlout.10.val_delay: 0
 ttlout.2.label: Fast Shutter
@@ -895,7 +895,7 @@ ttlout.4.val_delay: 0
 ttlout.5.label: WAXS
 ttlout.5.val: LUT2.OUT
 ttlout.5.val_delay: 0
-ttlout.6.label: BSDiodes TetrAMM
+ttlout.6.label: BSDiodes/It TetrAMM
 ttlout.6.val: LUT2.OUT
 ttlout.6.val_delay: 0
 ttlout.7.label: SAXS
@@ -904,6 +904,6 @@ ttlout.7.val_delay: 0
 ttlout.8.label: Fluorescence Detector
 ttlout.8.val: LUT4.OUT
 ttlout.8.val_delay: 0
-ttlout.9.label: User Trigger 1
+ttlout.9.label: FS State User Trigger 1
 ttlout.9.val: LUT5.OUT
 ttlout.9.val_delay: 0

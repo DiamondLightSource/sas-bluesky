@@ -1,0 +1,113 @@
+{
+  "title": "Panda Configure",
+  "instrument": "i22",
+  "detectors": [
+    "saxs",
+    "waxs"
+  ],
+  "profile-0": {
+    "cycles": 1,
+    "seq_trigger": "IMMEDIATE",
+    "multiplier": [
+      1,
+      1,
+      1,
+      1
+    ],
+    "total_frames": 1,
+    "duration_per_cycle": 2,
+    "group-0": {
+      "frames": 1,
+      "wait_time": 1,
+      "wait_units": "S",
+      "run_time": 1,
+      "run_units": "S",
+      "pause_trigger": "IMMEDIATE",
+      "wait_pulses": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "run_pulses": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "wait_time_s": 1,
+      "run_time_s": 1,
+      "group_duration": 2
+    }
+  },
+  "profile-1": {
+    "cycles": 1,
+    "seq_trigger": "IMMEDIATE",
+    "multiplier": [
+      1,
+      1,
+      1,
+      1
+    ],
+    "total_frames": 1,
+    "duration_per_cycle": 2,
+    "group-0": {
+      "frames": 1,
+      "wait_time": 1,
+      "wait_units": "S",
+      "run_time": 1,
+      "run_units": "S",
+      "pause_trigger": "IMMEDIATE",
+      "wait_pulses": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "run_pulses": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "wait_time_s": 1,
+      "run_time_s": 1,
+      "group_duration": 2
+    }
+  },
+  "profile-2": {
+    "cycles": 1,
+    "seq_trigger": "IMMEDIATE",
+    "multiplier": [
+      1,
+      1,
+      1,
+      1
+    ],
+    "total_frames": 1,
+    "duration_per_cycle": 2,
+    "group-0": {
+      "frames": 1,
+      "wait_time": 1,
+      "wait_units": "S",
+      "run_time": 1,
+      "run_units": "S",
+      "pause_trigger": "IMMEDIATE",
+      "wait_pulses": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "run_pulses": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "wait_time_s": 1,
+      "run_time_s": 1,
+      "group_duration": 2
+    }
+  }
+}

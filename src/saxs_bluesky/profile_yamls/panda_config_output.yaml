@@ -1,6 +1,6 @@
 ---
 title: Panda Configure
-experiment: cm40643-2/bluesky
+instrument_session: cm40643-4
 instrument: i22
 detectors: [saxs, waxs]
 profile-0:
@@ -11,11 +11,11 @@ profile-0:
   duration_per_cycle: 32.0
   group-0:
     frames: 1
+    trigger: IMMEDIATE
     wait_time: 3000
     wait_units: MS
     run_time: 3000
     run_units: MS
-    pause_trigger: IMMEDIATE
     wait_pulses: [1, 0, 0, 0]
     run_pulses: [1, 0, 0, 0]
     wait_time_s: 3.0
@@ -23,11 +23,11 @@ profile-0:
     group_duration: 6.0
   group-1:
     frames: 1
+    trigger: IMMEDIATE
     wait_time: 1000
     wait_units: MS
     run_time: 1000
     run_units: MS
-    pause_trigger: IMMEDIATE
     wait_pulses: [0, 0, 0, 0]
     run_pulses: [1, 1, 0, 0]
     wait_time_s: 1.0
@@ -35,11 +35,11 @@ profile-0:
     group_duration: 2.0
   group-2:
     frames: 8
+    trigger: IMMEDIATE
     wait_time: 1000
     wait_units: MS
     run_time: 1000
     run_units: MS
-    pause_trigger: IMMEDIATE
     wait_pulses: [0, 0, 0, 0]
     run_pulses: [1, 0, 0, 0]
     wait_time_s: 1.0
@@ -47,11 +47,11 @@ profile-0:
     group_duration: 16.0
   group-3:
     frames: 1
+    trigger: IMMEDIATE
     wait_time: 1000
     wait_units: MS
     run_time: 3000
     run_units: MS
-    pause_trigger: IMMEDIATE
     wait_pulses: [0, 0, 0, 0]
     run_pulses: [1, 0, 0, 0]
     wait_time_s: 1.0
@@ -59,11 +59,11 @@ profile-0:
     group_duration: 4.0
   group-4:
     frames: 1
+    trigger: IMMEDIATE
     wait_time: 3000
     wait_units: MS
     run_time: 1000
     run_units: MS
-    pause_trigger: IMMEDIATE
     wait_pulses: [0, 0, 0, 0]
     run_pulses: [0, 0, 0, 0]
     wait_time_s: 3.0
@@ -77,11 +77,11 @@ profile-1:
   duration_per_cycle: 2
   group-0:
     frames: 1
+    trigger: IMMEDIATE
     wait_time: 1
     wait_units: S
     run_time: 1
     run_units: S
-    pause_trigger: IMMEDIATE
     wait_pulses: [0, 0, 0, 0]
     run_pulses: [1, 1, 1, 1]
     wait_time_s: 1
@@ -95,11 +95,11 @@ profile-2:
   duration_per_cycle: 4
   group-0:
     frames: 1
+    trigger: IMMEDIATE
     wait_time: 1
     wait_units: S
     run_time: 1
     run_units: S
-    pause_trigger: IMMEDIATE
     wait_pulses: [0, 0, 0, 0]
     run_pulses: [1, 1, 1, 1]
     wait_time_s: 1
@@ -107,11 +107,11 @@ profile-2:
     group_duration: 2
   group-1:
     frames: 1
+    trigger: IMMEDIATE
     wait_time: 1
     wait_units: S
     run_time: 1
     run_units: S
-    pause_trigger: IMMEDIATE
     wait_pulses: [0, 0, 0, 0]
     run_pulses: [1, 1, 1, 1]
     wait_time_s: 1
@@ -125,11 +125,11 @@ profile-3:
   duration_per_cycle: 100
   group-0:
     frames: 100
+    trigger: IMMEDIATE
     wait_time: 0
     wait_units: S
     run_time: 1
     run_units: S
-    pause_trigger: IMMEDIATE
     wait_pulses: [0, 0, 0, 0]
     run_pulses: [1, 1, 1, 1]
     wait_time_s: 0
@@ -143,11 +143,11 @@ profile-4:
   duration_per_cycle: 100
   group-0:
     frames: 100
+    trigger: IMMEDIATE
     wait_time: 0
     wait_units: S
     run_time: 1
     run_units: S
-    pause_trigger: IMMEDIATE
     wait_pulses: [0, 0, 0, 0]
     run_pulses: [1, 1, 1, 1]
     wait_time_s: 0
@@ -161,11 +161,11 @@ profile-5:
   duration_per_cycle: 5.005
   group-0:
     frames: 5
+    trigger: IMMEDIATE
     wait_time: 0
     wait_units: MS
     run_time: 1
     run_units: MS
-    pause_trigger: IMMEDIATE
     wait_pulses: [0, 0, 0, 0]
     run_pulses: [1, 1, 0, 0]
     wait_time_s: 0.0
@@ -173,11 +173,11 @@ profile-5:
     group_duration: 0.005
   group-1:
     frames: 500
+    trigger: IMMEDIATE
     wait_time: 0
     wait_units: MS
     run_time: 5
     run_units: MS
-    pause_trigger: IMMEDIATE
     wait_pulses: [0, 0, 0, 0]
     run_pulses: [1, 1, 0, 1]
     wait_time_s: 0.0
@@ -185,11 +185,11 @@ profile-5:
     group_duration: 2.5
   group-2:
     frames: 500
+    trigger: IMMEDIATE
     wait_time: 0
     wait_units: MS
     run_time: 5
     run_units: MS
-    pause_trigger: IMMEDIATE
     wait_pulses: [0, 0, 0, 0]
     run_pulses: [1, 1, 0, 1]
     wait_time_s: 0.0

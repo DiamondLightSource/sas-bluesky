@@ -3,7 +3,7 @@ from pathlib import Path
 
 from pydantic_core import from_json
 
-from saxs_bluesky.utils.profile_groups import ExperimentProfiles, Group, Profile
+from saxs_bluesky.utils.profile_groups import ExperimentLoader, Group, Profile
 
 SAXS_bluesky_ROOT = Path(__file__)
 
@@ -14,7 +14,7 @@ yaml_dir = os.path.join(
 
 def test_profile_loader():
     config_filepath = os.path.join(yaml_dir, "panda_config.yaml")
-    config = ExperimentProfiles.read_from_yaml(config_filepath)
+    config = ExperimentLoader.read_from_yaml(config_filepath)
 
     first_profile = config.profiles[0]
 
@@ -27,11 +27,11 @@ def test_profile_append():
     P.append_group(
         Group(
             frames=1,
+            trigger="IMMEDIATE",
             wait_time=1,
             wait_units="S",
             run_time=1,
             run_units="S",
-            pause_trigger="IMMEDIATE",
             wait_pulses=[0, 0, 0, 0],
             run_pulses=[1, 1, 1, 1],
         )
@@ -46,11 +46,11 @@ def test_profile_json():
     P.append_group(
         Group(
             frames=1,
+            trigger="IMMEDIATE",
             wait_time=1,
             wait_units="S",
             run_time=1,
             run_units="S",
-            pause_trigger="IMMEDIATE",
             wait_pulses=[0, 0, 0, 0],
             run_pulses=[1, 1, 1, 1],
         )
@@ -73,11 +73,11 @@ def test_profile_delete():
         P.append_group(
             Group(
                 frames=1,
+                trigger="IMMEDIATE",
                 wait_time=1,
                 wait_units="S",
                 run_time=1,
                 run_units="S",
-                pause_trigger="IMMEDIATE",
                 wait_pulses=[0, 0, 0, 0],
                 run_pulses=[1, 1, 1, 1],
             )
@@ -93,11 +93,11 @@ def test_active_pulses():
     P.append_group(
         Group(
             frames=1,
+            trigger="IMMEDIATE",
             wait_time=1,
             wait_units="S",
             run_time=1,
             run_units="S",
-            pause_trigger="IMMEDIATE",
             wait_pulses=[0, 0, 0, 0],
             run_pulses=[1, 1, 1, 1],
         )

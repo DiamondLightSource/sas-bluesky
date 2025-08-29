@@ -1,5 +1,4 @@
 import os
-from datetime import datetime
 from pathlib import Path
 from string import ascii_lowercase
 from typing import Any
@@ -7,7 +6,7 @@ from typing import Any
 import numpy as np
 import yaml
 from ophyd_async.core import in_micros
-from ophyd_async.fastcs.panda import SeqTable, SeqTrigger
+from ophyd_async.fastcs.panda import SeqTable, SeqTableInfo, SeqTrigger
 from pydantic import BaseModel
 from pydantic.dataclasses import dataclass as pydanticdataclass
 
@@ -27,40 +26,44 @@ class Group(BaseModel):
     to build up complex experimental profiles"""
 
     frames: int
+    trigger: str
     wait_time: int
     wait_units: str
     run_time: int
     run_units: str
-    pause_trigger: str
     wait_pulses: list[int]
     run_pulses: list[int]
     # created by model_post_init
-    wait_time_s: float = 0.0
-    run_time_s: float = 0.0
-    group_duration: float = 0.0
+    # wait_time_s: float = 0.0
+    # run_time_s: float = 0.0
+    # group_duration: float = 0.0
 
     def model_post_init(self, __context: Any) -> None:
         assert len(self.wait_pulses) == len(self.run_pulses)
         self.run_units = self.run_units.upper()
         self.wait_units = self.wait_units.upper()
-        self.pause_trigger = self.pause_trigger.upper()
-        self.recalc_times()
+        self.trigger = self.trigger.upper()
 
-    def recalc_times(self) -> None:
-        self.wait_time_s = self.wait_time * ncdcore.to_seconds(self.wait_units)
-        self.run_time_s = self.run_time * ncdcore.to_seconds(self.run_units)
-        self.group_duration = (self.wait_time_s + self.run_time_s) * self.frames
+    @property
+    def wait_time_s(self) -> float:
+        return self.wait_time * ncdcore.to_seconds(self.wait_units)
+
+    @property
+    def run_time_s(self) -> float:
+        return self.run_time * ncdcore.to_seconds(self.run_units)
+
+    @property
+    def group_duration(self) -> float:
+        return (self.wait_time_s + self.run_time_s) * self.frames
 
     def seq_row(self) -> SeqTable:
-        self.recalc_times()
-
-        if not self.pause_trigger:
+        if not self.trigger:
             trigger = SeqTrigger.IMMEDIATE
-        elif self.pause_trigger == "FALSE":
+        elif self.trigger == "FALSE":
             trigger = SeqTrigger.IMMEDIATE
-            self.pause_trigger = "IMMEDIATE"
+            self.trigger = "IMMEDIATE"
         else:
-            trigger = eval(f"SeqTrigger.{self.pause_trigger}")
+            trigger = eval(f"SeqTrigger.{self.trigger}")
 
         seq_table_kwargs = {
             "repeats": self.frames,
@@ -101,38 +104,37 @@ class Profile(BaseModel):
     The information can also be used to configure it in the gui"""
 
     cycles: int = 1
-    seq_trigger: str = "IMMEDIATE"
+    seq_trigger: str = "Immediate"
     groups: list[Group] = []
-    multiplier: list[int] = [1, 1, 1, 1]
+    multiplier: list[int] | None = None
 
-    total_frames: int = 0
-    duration_per_cycle: float = 0
-
-    def model_post_init(self, __context: Any):
-        if len(self.groups) > 0:
-            self.analyse_profile()
-
-    def analyse_profile(self):
-        self.calc_total_frames()
-        self.calc_duration_per_cycle()
-
-    def calc_total_frames(self) -> int:
-        self.total_frames = 0
+    @property
+    def total_frames(self) -> int:
+        total_frames = 0
         for n_group in self.groups:
-            self.total_frames += n_group.frames
-        return self.total_frames
+            total_frames += n_group.frames
+        return total_frames
 
-    def calc_duration_per_cycle(self) -> float:
-        self.duration_per_cycle = 0
+    @property
+    def duration_per_cycle(self) -> float:
+        duration_per_cycle = 0
 
         for n_group in self.groups:
-            self.duration_per_cycle += n_group.group_duration
-        return self.duration_per_cycle
+            duration_per_cycle += n_group.group_duration
+        return duration_per_cycle
 
     @property
     def duration(self) -> float:
         duration = self.duration_per_cycle * self.cycles
         return duration
+
+    @property
+    def seq_table_info(self) -> SeqTableInfo:
+        seq_table_info = SeqTableInfo(
+            sequence_table=self.seq_table, repeats=self.cycles
+        )
+
+        return seq_table_info
 
     @property
     def active_pulses(self) -> list[int]:
@@ -151,21 +153,25 @@ class Profile(BaseModel):
 
         return active_pulses
 
-    def append_group(self, Group: Group, analyse_profile: bool = True):
+    @property
+    def triggers(self) -> list[int]:
+        # [3, 1, 1, 1, 1] or something
+        return [group.frames for group in self.groups]
+
+    @property
+    def number_of_events(self) -> list[int]:
+        return self.triggers * self.cycles
+
+    def append_group(self, Group: Group) -> None:
         self.groups.append(Group)
-        if analyse_profile:
-            self.analyse_profile()
 
-    def delete_group(self, n: int, analyse_profile: bool = True):
+    def delete_group(self, n: int) -> None:
         self.groups.pop(n)
-        if analyse_profile:
-            self.analyse_profile()
 
-    def insert_group(self, n: int, Group: Group, analyse_profile: bool = True):
+    def insert_group(self, n: int, Group: Group):
         self.groups.insert(n, Group)
-        if analyse_profile:
-            self.analyse_profile()
 
+    @property
     def seq_table(self) -> SeqTable:
         seq_tables = (group.seq_row() for group in self.groups)
 
@@ -193,7 +199,7 @@ class Profile(BaseModel):
 
 
 @pydanticdataclass
-class ExperimentProfiles:
+class ExperimentLoader:
     """
     The stores multiple Profiles and can be used in the GUI.
     The is analoaghous to the information shown in the legacy
@@ -203,15 +209,10 @@ class ExperimentProfiles:
 
     profiles: list[Profile]
     instrument: str
-    experiment: str
     detectors: list[str]
+    instrument_session: str = ""
 
     def __post_init__(self):
-        self.year = datetime.now().year
-        self.data_dir = os.path.join(
-            "/dls", self.instrument, "data", str(self.year), self.experiment
-        )
-
         self.n_profiles = len(self.profiles)
 
     @staticmethod
@@ -227,7 +228,6 @@ class ExperimentProfiles:
             config = yaml.full_load(file)
 
             instrument = config["instrument"]
-            experiment = config["experiment"]
             detectors = config["detectors"]
 
             profile_names = [f for f in config if f.startswith("profile")]
@@ -249,11 +249,11 @@ class ExperimentProfiles:
 
                     n_Group = Group(
                         frames=group["frames"],
+                        trigger=group["trigger"],
                         wait_time=group["wait_time"],
                         wait_units=group["wait_units"],
                         run_time=group["run_time"],
                         run_units=group["run_units"],
-                        pause_trigger=group["pause_trigger"],
                         wait_pulses=group["wait_pulses"],
                         run_pulses=group["run_pulses"],
                     )
@@ -269,12 +269,11 @@ class ExperimentProfiles:
 
                 profiles.append(n_profile)
 
-            return ExperimentProfiles(profiles, instrument, experiment, detectors)
+            return ExperimentLoader(profiles, instrument, detectors)
 
     def to_dict(self) -> dict:
         exp_dict = {
             "title": "Panda Configure",
-            "experiment": self.experiment,
             "instrument": self.instrument,
             "detectors": self.detectors,
         }

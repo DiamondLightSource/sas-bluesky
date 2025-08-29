@@ -1,25 +1,23 @@
 ---
 title: "Panda Default Configuration"
-experiment: "cm40643-3/bluesky"
+instrument_session: "cm40643-4"
 instrument: "i22"
 detectors: ["saxs", "waxs"] #For i22 this is a list which can contain, "saxs", "waxs", "i0", "it", "oav" and others listed in the i22 dodal modules
-BITA:  
+BITA:
   IN: "TTLIN3.VAL"
   High: True
-
 
 profile-0:
   cycles: 3
   seq_trigger: "IMMEDIATE" #this can be "IMMEDIATE"
   multiplier: [1, 1, 1, 1] #ie first set of detectors run at the bas clock, and others run as 1/N the duration of the first
 
-
   group-0:
     frames: 1
+    trigger: "IMMEDIATE"
     wait_time: 100
     wait_units: "MS" #can be "MIN", "S", "MS", "US"
     run_time: 100
     run_units: "MS"
-    pause_trigger: "IMMEDIATE"
     wait_pulses: [0, 0, 0, 0]
     run_pulses: [1, 0, 0, 0]

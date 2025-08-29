@@ -2,12 +2,10 @@ import os
 from pathlib import Path
 
 from saxs_bluesky.utils.profile_groups import Group, Profile
-from saxs_bluesky.utils.utils import ProfilePlotter, load_beamline_devices
+from saxs_bluesky.utils.utils import ProfilePlotter, load_beamline_config
 
-os.environ["BEAMLINE"] = "i22"
-
-DEV = load_beamline_devices()
-FAST_DETECTORS = DEV.FAST_DETECTORS
+CONFIG = load_beamline_config()
+FAST_DETECTORS = CONFIG.FAST_DETECTORS
 
 SAXS_bluesky_ROOT = Path(__file__)
 
@@ -16,16 +14,16 @@ yaml_dir = os.path.join(
 )
 
 
-def test_profile_append():
+def test_profile_plotter():
     P = Profile()
     P.append_group(
         Group(
             frames=1,
+            trigger="IMMEDIATE",
             wait_time=1,
             wait_units="S",
             run_time=1,
             run_units="S",
-            pause_trigger="IMMEDIATE",
             wait_pulses=[0, 0, 0, 0],
             run_pulses=[1, 1, 1, 1],
         )

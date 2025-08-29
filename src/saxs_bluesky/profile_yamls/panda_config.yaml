@@ -1,9 +1,9 @@
 ---
 title: "Panda Configure"
-experiment: "cm40643-2/bluesky"
+instrument_session: "cm40643-4"
 instrument: "i22"
 detectors: ["saxs", "waxs"] #For i22 this is a list which can contain, "saxs", "waxs", "i0", "it", "oav" and others listed in the i22 dodal modules
-BITA:  
+BITA:
   IN: "TTLIN3.VAL"
   High: True
 # BITB:  "TTLIN4.VAL"
@@ -17,59 +17,55 @@ profile-0:
   seq_trigger: "IMMEDIATE" #this can be "IMMEDIATE"
   multiplier: [1, 2, 4, 8] #ie first set of detectors run at the bas clock, and others run as 1/N the duration of the first
 
-
   group-0:
     frames: 1
+    trigger: "IMMEDIATE"
     wait_time: 3000
     wait_units: "MS" #can be "MIN", "S", "MS", "US"
     run_time: 3000
     run_units: "MS"
-    pause_trigger: "IMMEDIATE"
     wait_pulses: [1, 0, 0, 0]
     run_pulses: [1, 0, 0, 0]
 
   group-1:
     frames: 1
+    trigger: "IMMEDIATE"
     wait_time: 1000
     wait_units: "MS"
     run_time: 1000
     run_units: "MS"
-    pause_trigger: "IMMEDIATE"
     wait_pulses: [0, 0, 0, 0]
     run_pulses: [1, 1, 0, 0]
 
   group-2:
     frames: 8
+    trigger: "IMMEDIATE"
     wait_time: 1000
     wait_units: "MS"
     run_time: 1000
     run_units: "MS"
-    pause_trigger: "IMMEDIATE"
     wait_pulses: [0, 0, 0, 0]
     run_pulses: [1, 0, 0, 0]
 
   group-3:
     frames: 1
+    trigger: "IMMEDIATE"
     wait_time: 1000
     wait_units: "MS"
     run_time: 3000
     run_units: "MS"
-    pause_trigger: "IMMEDIATE"
     wait_pulses: [0, 0, 0, 0]
     run_pulses: [1, 0, 0, 0]
-  
+
   group-5:
     frames: 1
+    trigger: "IMMEDIATE"
     wait_time: 3000
     wait_units: "MS"
     run_time: 1000
     run_units: "MS"
-    pause_trigger: "IMMEDIATE"
     wait_pulses: [0, 0, 0, 0]
     run_pulses: [0, 0, 0, 0]
-
-
-
 
 profile-1:
   cycles: 1
@@ -78,14 +74,13 @@ profile-1:
 
   group-0:
     frames: 1
+    trigger: "IMMEDIATE"
     wait_time: 1
     wait_units: "S"
     run_time: 1
     run_units: "S"
-    pause_trigger: "IMMEDIATE"
     wait_pulses: [0, 0, 0, 0]
     run_pulses: [1, 1, 1, 1]
-
 
 profile-2:
   cycles: 1
@@ -94,27 +89,25 @@ profile-2:
 
   group-0:
     frames: 1
+    trigger: "IMMEDIATE"
     wait_time: 1
     wait_units: "S"
     run_time: 1
     run_units: "S"
-    pause_trigger: "IMMEDIATE"
     wait_pulses: [0, 0, 0, 0]
     run_pulses: [1, 1, 1, 1]
 
   group-1:
     frames: 1
+    trigger: "IMMEDIATE"
     wait_time: 1
     wait_units: "S"
     run_time: 1
     run_units: "S"
-    pause_trigger: "IMMEDIATE"
     wait_pulses: [0, 0, 0, 0]
     run_pulses: [1, 1, 1, 1]
 
-
 ######################################################################################
-
 
 #this is the Linkam3 Profile. Just go to temperature, trigger. Rinse and repeat
 profile-3:
@@ -124,15 +117,13 @@ profile-3:
 
   group-0:
     frames: 100
+    trigger: "IMMEDIATE"
     wait_time: 0
     wait_units: "S"
     run_time: 1
     run_units: "S"
-    pause_trigger: "IMMEDIATE"
     wait_pulses: [0, 0, 0, 0]
     run_pulses: [1, 1, 1, 1]
-
-  
 
 #this is the StopFlow Profile - Remote Triggered by Windows Stopflow machine
 profile-4:
@@ -142,14 +133,13 @@ profile-4:
 
   group-0:
     frames: 100
+    trigger: "IMMEDIATE"
     wait_time: 0
     wait_units: "S"
     run_time: 1
     run_units: "S"
-    pause_trigger: "IMMEDIATE"
     wait_pulses: [0, 0, 0, 0]
     run_pulses: [1, 1, 1, 1]
-
 
 #this is the PressureJump Profile, needs an our trigger to trigger P jump and collect frames
 #using pulseblock 4 as the trigger of the pressure jump cell
@@ -161,30 +151,30 @@ profile-5:
 
   group-0:
     frames: 5
+    trigger: "IMMEDIATE"
     wait_time: 0
     wait_units: "MS"
     run_time: 1
     run_units: "MS"
-    pause_trigger: "IMMEDIATE"
     wait_pulses: [0, 0, 0, 0]
     run_pulses: [1, 1, 0, 0]
 
   group-1:
     frames: 500
+    trigger: "IMMEDIATE"
     wait_time: 0
     wait_units: "MS"
     run_time: 5
     run_units: "MS"
-    pause_trigger: "IMMEDIATE"
     wait_pulses: [0, 0, 0, 0]
     run_pulses: [1, 1, 0, 1]
 
   group-2:
     frames: 500
+    trigger: "IMMEDIATE"
     wait_time: 0
     wait_units: "MS"
     run_time: 5
     run_units: "MS"
-    pause_trigger: "IMMEDIATE"
     wait_pulses: [0, 0, 0, 0]
     run_pulses: [1, 1, 0, 1]

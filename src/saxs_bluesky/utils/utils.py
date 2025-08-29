@@ -8,7 +8,7 @@ import numpy as np
 from dodal.utils import get_beamline_name
 
 from saxs_bluesky.utils.ncdcore import ncdcore
-from saxs_bluesky.utils.profile_groups import ExperimentProfiles, Profile
+from saxs_bluesky.utils.profile_groups import ExperimentLoader, Profile
 
 
 def get_saxs_beamline() -> str:
@@ -25,18 +25,8 @@ BL = get_saxs_beamline()
 
 
 def load_beamline_config():
-    BL_CONFIG = import_module(f"saxs_bluesky.defaults_configs.{BL}.{BL}_config")
+    BL_CONFIG = import_module(f"saxs_bluesky.beamline_configs.{BL}_config")
     return BL_CONFIG
-
-
-def load_beamline_profile():
-    BL_PROF = import_module(f"saxs_bluesky.defaults_configs.{BL}.{BL}_profile")
-    return BL_PROF
-
-
-def load_beamline_devices():
-    BL_DEV = import_module(f"saxs_bluesky.defaults_configs.{BL}.{BL}_dev")
-    return BL_DEV
 
 
 class ProfilePlotter:
@@ -103,7 +93,7 @@ if __name__ == "__main__":
         _REPO_ROOT, "src/saxs_bluesky/profile_yamls", "panda_config.yaml"
     )
 
-    experimental_profiles = ExperimentProfiles.read_from_yaml(default_config_path)
+    experimental_profiles = ExperimentLoader.read_from_yaml(default_config_path)
     profile = experimental_profiles.profiles[0]
 
     ProfilePlotter(profile)

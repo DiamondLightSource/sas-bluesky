@@ -16,24 +16,22 @@ from ophyd_async.fastcs.panda import (
 from ophyd_async.fastcs.panda._block import PandaTimeUnits
 
 from saxs_bluesky.utils.ncdcore import ncdcore
-from saxs_bluesky.utils.profile_groups import Group, Profile
+from saxs_bluesky.utils.profile_groups import ExperimentLoader, Group, Profile
 from saxs_bluesky.utils.utils import (
     ProfilePlotter,
     get_saxs_beamline,
     load_beamline_config,
-    load_beamline_profile,
 )
 
 CONFIG = load_beamline_config()
-BL_PROF = load_beamline_profile()
-DEFAULT_GROUP = BL_PROF.DEFAULT_GROUP
-Bl = get_saxs_beamline()
+DEFAULT_GROUP = CONFIG.DEFAULT_GROUP
+BL = get_saxs_beamline()
 
 
 class EditableTableview(ttk.Treeview):
-    def __init__(self, parent, *args, **kwargs):
-        self.parent = parent
-        super().__init__(parent, *args, **kwargs)
+    def __init__(self, proftab, *args, **kwargs):
+        self.proftab = proftab
+        super().__init__(self.proftab, *args, **kwargs)
         self.bind("<Double-1>", lambda event: self.onDoubleClick(event))
         self.kwargs = kwargs
 
@@ -72,7 +70,7 @@ class EditableTableview(ttk.Treeview):
         elif column == "#1":
             return
 
-        elif column in ["#4", "#6"]:  # these groups create a drop down menu
+        elif column in ["#5", "#7"]:  # these groups create a drop down menu
             # place dropdown popup properly
             options = list(PandaTimeUnits.__dict__["_member_names_"])
             # options = [f.lower() for f in options]
@@ -80,10 +78,10 @@ class EditableTableview(ttk.Treeview):
             self.Popup = DropdownPopup(self, rowid, int(column[1:]) - 1, text, options)
             self.Popup.place(x=x, y=y + pady, width=width, height=height, anchor="w")
 
-        elif column in ["#7"]:  # these groups create a drop down menu
+        elif column in ["#3"]:  # these groups create a drop down menu
             # place dropdown popup properly
 
-            options = list(SeqTrigger.__dict__["_member_names_"])
+            options = [str(e.name).upper() for e in SeqTrigger]
 
             # options = ["True", "False"]
             self.Popup = DropdownPopup(self, rowid, int(column[1:]) - 1, text, options)
@@ -116,16 +114,19 @@ class EditableTableview(ttk.Treeview):
 
 
 class DropdownPopup(ttk.Combobox):
-    def __init__(self, parent, rowid, column, text, options, **kw):
+    def __init__(self, tableview, rowid, column, text, options, **kw):
         ttk.Style().configure("pad.TEntry", padding="1 1 1 1")
 
         self.option_var = tkinter.StringVar()
-        self.tv = parent
-        self.rowid = rowid
-        self.column = column
+        self.tableview: EditableTableview = tableview
+        self.rowid: int = rowid
+        self.column: int = column
 
         super().__init__(
-            parent, textvariable=self.option_var, values=options, state="readonly"
+            self.tableview,
+            textvariable=self.option_var,
+            values=options,
+            state="readonly",
         )
 
         self.current(options.index(text))
@@ -138,37 +139,36 @@ class DropdownPopup(ttk.Combobox):
         self.focus_force()
 
     def on_return(self, event):
-        rowid = self.tv.focus()
-        vals = self.tv.item(rowid, "values")
+        rowid = self.tableview.focus()
+        vals = self.tableview.item(rowid, "values")
         vals = list(vals)
 
         selection = ncdcore.str2bool(self.option_var.get())
 
         if selection is not None:
-            vals[self.column] = selection
+            vals[self.column] = selection  # type: ignore
         else:
             selection = self.option_var.get()
             vals[self.column] = self.option_var.get()
 
         self.selection = selection
 
-        self.tv.item(rowid, values=vals)
+        self.tableview.item(rowid, values=vals)
         self.destroy()
 
-        self.tv.parent.parent.commit_config()
-        self.tv.parent.profile.analyse_profile()
-        self.tv.parent.generate_info_boxes()
+        self.tableview.proftab.parent.commit_config()
+        self.tableview.proftab.generate_info_boxes()
 
 
 class CheckButtonPopup(ttk.Checkbutton):
-    def __init__(self, parent, rowid, column, x, y, columns, **kw):
-        self.parent: EditableTableview = parent
+    def __init__(self, tableview, rowid, column, x, y, columns, **kw):
+        self.tableview: EditableTableview = tableview
         self.rowid: int = rowid
         self.column: int = column
 
         self.row_num = int(rowid[-2::], 16) - 1
 
-        w = 420  # width for the Tk root
+        w = ((CONFIG.PULSEBLOCKS) * 100) + 50
         h = 50  # height for the Tk root
 
         self.root = tkinter.Toplevel()  ##HOLY MOLY
@@ -180,7 +180,7 @@ class CheckButtonPopup(ttk.Checkbutton):
         self.root.minsize(w, h)
         self.root.title(f"{columns[column]} - Group: {self.row_num}")
 
-        vals = self.parent.item(self.rowid, "values")
+        vals = self.tableview.item(self.rowid, "values")
         self.vals: list[str] = list(vals)
         self.pulse_vals: list[str] = self.vals[self.column].split()
 
@@ -258,16 +258,25 @@ class CheckButtonPopup(ttk.Checkbutton):
 
         self.vals[self.column] = pulse_vals
 
-        self.parent.item(self.rowid, values=self.vals)
+        self.tableview.item(self.rowid, values=self.vals)
         self.root.destroy()
         del self
 
 
 class EntryPopup(ttk.Entry):
-    def __init__(self, parent, iid, column, text, entrytype=int, **kw):
+    def __init__(
+        self,
+        tableview: EditableTableview,
+        iid: str,
+        column: int,
+        text: str,
+        entrytype=int,
+        **kw,
+    ):
+        super().__init__(tableview, style="pad.TEntry", **kw)
+
         ttk.Style().configure("pad.TEntry", padding="1 1 1 1")
-        super().__init__(parent, style="pad.TEntry", **kw)
-        self.tv = parent
+        self.tableview = tableview
         self.iid = iid
         self.column = column
         self.entrytype = entrytype
@@ -281,8 +290,8 @@ class EntryPopup(ttk.Entry):
         self.bind("<Escape>", lambda *ignore: self.destroy())
 
     def on_return(self, event):
-        rowid = self.tv.focus()
-        vals = self.tv.item(rowid, "values")
+        rowid = self.tableview.focus()
+        vals = self.tableview.item(rowid, "values")
         vals = list(vals)
 
         if isinstance(self.entrytype, int):
@@ -295,16 +304,15 @@ class EntryPopup(ttk.Entry):
         else:
             selection = self.get()
 
-        vals[self.column] = selection
+        vals[self.column] = selection  # type: ignore
 
         self.selection = selection
 
-        self.tv.item(rowid, values=vals)
+        self.tableview.item(rowid, values=vals)
         self.destroy()
 
-        self.tv.parent.parent.commit_config()
-        self.tv.parent.profile.analyse_profile()
-        self.tv.parent.generate_info_boxes()
+        self.tableview.proftab.parent.commit_config()
+        self.tableview.proftab.generate_info_boxes()
 
     def select_all(self, *ignore):
         """Set selection on the whole text"""
@@ -334,8 +342,6 @@ class ProfileTab(ttk.Frame):
             messagebox.showinfo("Info", "Select a group to delete")
 
         for row in rows[::-1]:
-            print(row)
-
             row_str = "0X" + (row.replace("I", ""))
             row_int = (int(row_str, 16)) - 1
             self.profile.delete_group(n=row_int)
@@ -469,11 +475,11 @@ class ProfileTab(ttk.Frame):
 
             n_group = Group(
                 frames=int(group[1]),
-                wait_time=int(group[2]),
-                wait_units=group[3],
-                run_time=int(group[4]),
-                run_units=group[5],
-                pause_trigger=group[6],
+                trigger=group[2],
+                wait_time=int(group[3]),
+                wait_units=group[4],
+                run_time=int(group[5]),
+                run_units=group[6],
                 wait_pulses=wait_pulses,
                 run_pulses=run_pulses,
             )
@@ -483,7 +489,10 @@ class ProfileTab(ttk.Frame):
         cycles = self.get_n_cycles_value()
         profile_trigger = self.get_start_value()
 
-        multiplier = [int(f.get()) for f in self.multiplier_var_options]
+        if self.multiplier_var_options:
+            multiplier = [int(f.get()) for f in self.multiplier_var_options]
+        else:
+            multiplier = None
 
         new_profile = Profile(
             cycles=cycles,
@@ -497,13 +506,14 @@ class ProfileTab(ttk.Frame):
 
     def print_profile_button_action(self):
         self.parent.commit_config()
-        self.profile.analyse_profile()
         self.generate_info_boxes()
-
-        print(self.profile)
 
         for i in self.profile.groups:
             print(i)
+
+        print(self.profile)
+        print(self.profile.active_pulses)
+        print(self.profile.duration)
 
     # TODO: https://github.com/DiamondLightSource/saxs-bluesky/issues/23
     def build_multiplier_choices(self):
@@ -521,7 +531,7 @@ class ProfileTab(ttk.Frame):
             )
 
             self.multiplier_var = tkinter.StringVar(
-                value=str(self.profile.multiplier[i])
+                value=str(self.profile.multiplier[i])  # type: ignore
             )
             tkinter.Entry(self, bd=1, width=10, textvariable=self.multiplier_var).grid(
                 column=col_pos, row=0, padx=5, pady=5, sticky="nes"
@@ -535,18 +545,22 @@ class ProfileTab(ttk.Frame):
 
         ProfilePlotter(self.profile, CONFIG.PULSE_BLOCK_NAMES)
 
-    # def focus_out_generate_info_boxes(event):
-    #     self.generate_info_boxes()
+    # Fucntion that will be called when entry is changed
+    def entry_changed(self, *args):
+        self.parent.commit_config()
+        self.generate_info_boxes()
 
-    def __init__(self, parent, notebook, configuration, n_profile):
+    def __init__(
+        self, parent, notebook, configuration: ExperimentLoader, n_profile: int
+    ):
         self.notebook = notebook
         self.parent = parent
 
         self.configuration = configuration
         self.n_profile = n_profile
-        self.profile = self.configuration.profiles[self.n_profile]
+        self.profile: Profile = self.configuration.profiles[self.n_profile]
 
-        self.seq_table = self.profile.seq_table()
+        self.seq_table = self.profile.seq_table
 
         super().__init__(self.notebook, borderwidth=5, relief="raised")
 
@@ -562,8 +576,10 @@ class ProfileTab(ttk.Frame):
         self.outputs = self.profile.outputs()
         self.inputs = self.profile.inputs()
 
-        if CONFIG.USE_MULTIPLIERS:
+        if self.profile.multiplier is not None:
             self.build_multiplier_choices()
+        else:
+            self.multiplier_var_options = None
             ### add tree view ############################################
 
         self.build_profile_tree()
@@ -599,6 +615,9 @@ class ProfileTab(ttk.Frame):
         )
 
         self.cycles_entry.grid(column=1, row=1, padx=5, pady=5, sticky="w")
+
+        # Tracing the entry and calling the above function
+        self.n_cycles_entry_value.trace_add("write", self.entry_changed)
 
         # cycles_entry.bind("<FocusOut>", self.focus_out_generate_info_boxes)
 
