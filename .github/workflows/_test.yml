@@ -38,7 +38,7 @@ jobs:
 
       - if: inputs.python-version == 'dev'
         name: Upload dev-requirements.txt
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: dev-requirements
           path: /tmp/dev-requirements.txt
@@ -54,7 +54,7 @@ jobs:
         run: tox -e tests
 
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v5
+        uses: codecov/codecov-action@5a1091511ad55cbe89839c7260b706298ca349f7 # v5
         with:
           name: ${{ inputs.python-version }}/${{ inputs.runs-on }}
           files: cov.xml
